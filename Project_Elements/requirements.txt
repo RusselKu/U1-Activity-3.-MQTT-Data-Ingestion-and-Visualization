@@ -1,0 +1,7 @@
+paho-mqtt>=1.6.1
+matplotlib>=3.8
+streamlit>=1.30
+jupyterlab>=4.1
+psycopg2-binary>=2.9
+plotly
+SQLAlchemy

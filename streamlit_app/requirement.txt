@@ -1,0 +1,22 @@
+# Streamlit (Dashboard)
+streamlit
+plotly  
+
+# MongoDB
+pymongo
+dnspython  
+pymongo[srv]  
+
+# Data processing 
+pandas
+numpy
+pyarrow  
+
+# Airflow
+apache-airflow-providers-mongo
+apache-airflow-providers-http
+requests
+psycopg2-binary  
+# Utilities
+python-dotenv
+python-dateutil  

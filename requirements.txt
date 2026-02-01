@@ -1,0 +1,16 @@
+streamlit
+plotly
+
+# MongoDB
+pymongo
+dnspython
+pymongo[srv]
+
+# Data processing
+pandas
+numpy
+pyarrow
+
+# Utilities
+python-dotenv
+python-dateutil

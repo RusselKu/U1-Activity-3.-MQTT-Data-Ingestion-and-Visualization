@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.log
+*.sqlite3
+*.egg
+*.egg-info/
+*.env
+
+# Environment variables
+.env
+.env.*
+
+# Jupyter / IPython
+.ipynb_checkpoints
+
+# VSCode / IDEs
+.vscode/
+.idea/
+
+# Airflow files (optional if using local dags)
+airflow.db
+airflow.cfg
+logs/
+*.pid
+*.err
+*.out
+
+# Docker
+*.pid
+*.sock
+*.log
+*.db
+*.tar
+*.img
+
+# Streamlit cache
+.streamlit/
+.cache/
+**/__pycache__/
+
+# macOS / Windows
+.DS_Store
+Thumbs.db
+
+# Pytest
+htmlcov/
+.coverage
+.tox/
+.nox/
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Requirements lock
+poetry.lock
+Pipfile.lock
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Others
+*.bak
+*.tmp
+*.swp
+*.orig
