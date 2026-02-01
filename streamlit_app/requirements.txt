@@ -1,0 +1,15 @@
+# Streamlit (Dashboard)
+streamlit
+plotly
+
+# Data processing
+pandas
+numpy
+pyarrow
+
+# PostgreSQL
+psycopg2-binary
+
+# Utilities
+python-dotenv
+python-dateutil
