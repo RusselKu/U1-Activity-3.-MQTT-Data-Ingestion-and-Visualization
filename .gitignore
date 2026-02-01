@@ -62,3 +62,7 @@ dist/
 *.tmp
 *.swp
 *.orig
+
+#Mosquitto data and logs
+mosquitto/data/
+mosquitto/log/
