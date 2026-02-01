@@ -20,14 +20,6 @@ __pycache__/
 .vscode/
 .idea/
 
-# Airflow files (optional if using local dags)
-airflow.db
-airflow.cfg
-logs/
-*.pid
-*.err
-*.out
-
 # Docker
 *.pid
 *.sock
