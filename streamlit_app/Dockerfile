@@ -14,7 +14,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ENV PATH="/root/.local/bin:${PATH}"
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir --user -r requirements.txt
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir --user --timeout=600 -r requirements.txt
 
 
 COPY . .
