@@ -1,2 +1,4 @@
-paho-mqtt
-psycopg2-binary
+# Dependencias para el Subscriber MQTT
+paho-mqtt==1.6.1
+psycopg2-binary==2.9.9
+python-dotenv==1.0.0

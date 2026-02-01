@@ -1,16 +1,19 @@
 streamlit
 plotly
 
-# MongoDB
-pymongo
-dnspython
-pymongo[srv]
-
 # Data processing
 pandas
 numpy
 pyarrow
 
+# MQTT
+paho-mqtt
+
+# Database
+psycopg2-binary
+sqlalchemy
+
 # Utilities
 python-dotenv
 python-dateutil
+requests

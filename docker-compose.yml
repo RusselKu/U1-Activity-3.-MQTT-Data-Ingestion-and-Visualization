@@ -1,14 +1,15 @@
-version: '3.8'
-
 services:
-  # MQTT Broker
+  # MQTT Broker (Mosquitto)
   mosquitto:
     image: eclipse-mosquitto:2.0
     container_name: mosquitto
     ports:
       - "1883:1883"
+      - "9001:9001"
     volumes:
       - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_logs:/mosquitto/log
     networks:
       - data_pipeline_net
     restart: always
@@ -40,36 +41,20 @@ services:
       - postgres
     environment:
       - MQTT_BROKER=mosquitto
-      - DB_HOST=postgres_db
-      - DB_NAME=sensordata
-      - DB_USER=user
-      - DB_PASS=password
-    networks:
-      - data_pipeline_net
-    restart: always
-
-  # Streamlit Dashboard
-  streamlit:
-    build:
-      context: ./streamlit_app
-      dockerfile: Dockerfile
-    container_name: streamlit_dashboard
-    depends_on:
-      - postgres
-    ports:
-      - "8501:8501"
-    environment:
+      - MQTT_PORT=1883
       - DB_HOST=postgres_db
       - DB_PORT=5432
       - DB_NAME=sensordata
       - DB_USER=user
-      - DB_PASS=password
+      - DB_PASSWORD=password
     networks:
       - data_pipeline_net
-    restart: on-failure
+    restart: always
 
 volumes:
   postgres_data:
+  mosquitto_data:
+  mosquitto_logs:
 
 networks:
   data_pipeline_net:
