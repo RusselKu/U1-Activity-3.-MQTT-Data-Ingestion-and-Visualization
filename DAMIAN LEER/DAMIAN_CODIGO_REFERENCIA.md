@@ -1,3 +1,143 @@
+# 🚀 DAMIÁN - Referencia Rápida de Código
+
+> Todos los fragmentos de código que necesitas. Copia y pega directamente.
+
+---
+
+## 📄 Archivo 1: `streamlit_app/.env`
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=user
+DB_PASSWORD=password
+DB_NAME=sensordata
+```
+
+**Ubicación**: `streamlit_app/.env`
+
+---
+
+## 📄 Archivo 2: `streamlit_app/utils/__init__.py`
+
+```python
+# Archivo vacío - solo para marcar como módulo Python
+```
+
+**Ubicación**: `streamlit_app/utils/__init__.py`
+
+---
+
+## 📄 Archivo 3: `streamlit_app/utils/db_connection.py`
+
+```python
+import os
+import psycopg2
+import pandas as pd
+from dotenv import load_dotenv
+import streamlit as st
+
+# Cargar variables de entorno
+load_dotenv()
+
+@st.cache_resource
+def get_db_connection():
+    """
+    Obtiene una conexión a la base de datos PostgreSQL.
+    Usa st.cache_resource para evitar crear múltiples conexiones.
+    """
+    try:
+        connection = psycopg2.connect(
+            host=os.getenv("DB_HOST", "localhost"),
+            port=os.getenv("DB_PORT", "5432"),
+            user=os.getenv("DB_USER", "user"),
+            password=os.getenv("DB_PASSWORD", "password"),
+            database=os.getenv("DB_NAME", "sensordata")
+        )
+        return connection
+    except Exception as e:
+        st.error(f"❌ Error conectando a la base de datos: {e}")
+        return None
+
+def query_data(query, params=None):
+    """
+    Ejecuta una consulta SQL y retorna los resultados como DataFrame.
+    """
+    connection = get_db_connection()
+    if connection is None:
+        return None
+    
+    try:
+        df = pd.read_sql(query, connection, params=params)
+        return df
+    except Exception as e:
+        st.error(f"❌ Error ejecutando consulta: {e}")
+        return None
+
+def get_int_data(hours=1):
+    """
+    Obtiene datos de tipo entero de las últimas N horas.
+    """
+    query = """
+    SELECT id, topic, value, timestamp
+    FROM lake_raw_data_int
+    WHERE timestamp >= NOW() - INTERVAL '%s hours'
+    ORDER BY timestamp ASC
+    """
+    return query_data(query, (hours,))
+
+def get_float_data(hours=1):
+    """
+    Obtiene datos de tipo flotante de las últimas N horas.
+    """
+    query = """
+    SELECT id, topic, value, timestamp
+    FROM lake_raw_data_float
+    WHERE timestamp >= NOW() - INTERVAL '%s hours'
+    ORDER BY timestamp ASC
+    """
+    return query_data(query, (hours,))
+
+def get_stats_int(hours=1):
+    """
+    Obtiene estadísticas de datos enteros.
+    """
+    query = """
+    SELECT 
+        COUNT(*) as total,
+        AVG(value) as promedio,
+        MIN(value) as minimo,
+        MAX(value) as maximo,
+        STDDEV(value) as desv_std
+    FROM lake_raw_data_int
+    WHERE timestamp >= NOW() - INTERVAL '%s hours'
+    """
+    return query_data(query, (hours,))
+
+def get_stats_float(hours=1):
+    """
+    Obtiene estadísticas de datos flotantes.
+    """
+    query = """
+    SELECT 
+        COUNT(*) as total,
+        AVG(value) as promedio,
+        MIN(value) as minimo,
+        MAX(value) as maximo,
+        STDDEV(value) as desv_std
+    FROM lake_raw_data_float
+    WHERE timestamp >= NOW() - INTERVAL '%s hours'
+    """
+    return query_data(query, (hours,))
+```
+
+**Ubicación**: `streamlit_app/utils/db_connection.py`
+
+---
+
+## 📄 Archivo 4: `streamlit_app/app.py`
+
+```python
 import streamlit as st
 from datetime import datetime, timedelta
 import plotly.graph_objects as go
@@ -13,7 +153,7 @@ st.set_page_config(
 )
 
 # Estilos personalizados
-st.markdown(u"""
+st.markdown("""
     <style>
     .main-title {
         color: #1f77b4;
@@ -58,7 +198,7 @@ with st.sidebar:
         st.cache_resource.clear()
         st.rerun()
     
-    st.markdown("--- ")
+    st.markdown("---")
     st.info("ℹ️ Los datos se actualizan cada 2 segundos en el backend.\nHaz clic en 'Refrescar' para ver cambios.")
 
 # Tabs principales
@@ -192,7 +332,7 @@ with tab2:
 
 # ===================== TAB 3: INFORMACIÓN =====================
 with tab3:
-    st.markdown(u"""
+    st.markdown("""
     ## 📋 Información del Proyecto
     
     ### Arquitectura
@@ -237,3 +377,61 @@ with tab3:
     - **Máximo**: Valor más alto
     - **Desv. Estándar**: Desviación estándar
     """)
+```
+
+**Ubicación**: `streamlit_app/app.py`
+
+---
+
+## 🔧 Comandos para Ejecutar
+
+### Instalar dependencias
+```bash
+pip install streamlit plotly pandas psycopg2-binary python-dotenv
+```
+
+### Ejecutar la app
+```bash
+cd streamlit_app
+streamlit run app.py
+```
+
+### Ver logs de Docker
+```bash
+docker-compose logs -f subscriber
+docker-compose logs -f postgres
+```
+
+### Verificar estado de servicios
+```bash
+docker-compose ps
+```
+
+---
+
+## 📂 Estructura Final
+
+```
+streamlit_app/
+├── .env                      ← CREAR
+├── app.py                    ← CREAR
+├── Dockerfile                ✅ Ya existe
+├── requirements.txt          ✅ Ya existe
+├── utils/
+│   ├── __init__.py          ← CREAR (vacío)
+│   └── db_connection.py     ← CREAR
+└── pages/
+    ├── __init__.py          (opcional)
+    └── (adicionales)        (opcional)
+```
+
+---
+
+## ✅ Resumen
+
+1. **Copia el contenido** de cada archivo arriba
+2. **Créa los 4 archivos** en las ubicaciones indicadas
+3. **Ejecuta**: `streamlit run streamlit_app/app.py`
+4. **Abre**: http://localhost:8501
+
+¡Listo! 🚀

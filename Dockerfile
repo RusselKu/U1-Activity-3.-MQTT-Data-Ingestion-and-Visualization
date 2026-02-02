@@ -1,4 +1,4 @@
-FROM apache/airflow:2.8.1
+FROM python:3.11-slim-buster
 
 # system dependencies 
 USER root
@@ -8,11 +8,8 @@ RUN apt-get update && \
         python3-dev && \
     rm -rf /var/lib/apt/lists/*
 
-# user
-USER airflow
-
 # python
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-WORKDIR /opt/airflow
+WORKDIR /app

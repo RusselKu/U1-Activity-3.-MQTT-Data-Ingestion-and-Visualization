@@ -1,23 +1,42 @@
--- This script will be executed when the PostgreSQL container starts for the first time.
+-- Script de inicialización de PostgreSQL
+-- Este archivo se ejecuta automáticamente cuando PostgreSQL inicia por primera vez
 
--- Create the table for integer sensor data
+-- Crear tabla para datos enteros
 CREATE TABLE IF NOT EXISTS lake_raw_data_int (
     id SERIAL PRIMARY KEY,
     topic VARCHAR(255) NOT NULL,
     payload JSONB,
-    value BIGINT NOT NULL,
-    ts TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    value INTEGER,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create the table for float sensor data
+-- Crear tabla para datos flotantes
 CREATE TABLE IF NOT EXISTS lake_raw_data_float (
     id SERIAL PRIMARY KEY,
     topic VARCHAR(255) NOT NULL,
     payload JSONB,
-    value DOUBLE PRECISION NOT NULL,
-    ts TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    value FLOAT,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Optional: Create indexes for faster queries on timestamp
-CREATE INDEX IF NOT EXISTS idx_int_ts ON lake_raw_data_int(ts);
-CREATE INDEX IF NOT EXISTS idx_float_ts ON lake_raw_data_float(ts);
+-- Crear índices para mejor rendimiento
+CREATE INDEX IF NOT EXISTS idx_topic_int ON lake_raw_data_int(topic);
+CREATE INDEX IF NOT EXISTS idx_topic_float ON lake_raw_data_float(topic);
+CREATE INDEX IF NOT EXISTS idx_timestamp_int ON lake_raw_data_int(timestamp DESC);
+CREATE INDEX IF NOT EXISTS idx_timestamp_float ON lake_raw_data_float(timestamp DESC);
+
+-- Crear tabla de log de eventos
+CREATE TABLE IF NOT EXISTS events_log (
+    id SERIAL PRIMARY KEY,
+    event_type VARCHAR(50),
+    message TEXT,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insertar un evento de bienvenida
+INSERT INTO events_log (event_type, message) 
+VALUES ('INIT', 'Database initialized successfully');
+
+-- Mostrar tablas creadas
+SELECT 'Tablas creadas:' as status;
+\dt

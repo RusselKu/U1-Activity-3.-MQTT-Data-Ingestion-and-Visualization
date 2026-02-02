@@ -1,15 +1,6 @@
-# Streamlit (Dashboard)
-streamlit
+streamlit>=1.30
 plotly
-
-# Data processing
 pandas
 numpy
-pyarrow
-
-# PostgreSQL
-psycopg2-binary
-
-# Utilities
 python-dotenv
-python-dateutil
+psycopg2-binary
